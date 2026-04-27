@@ -96,21 +96,22 @@ export default function Animacion() {
   const srX = cX - srWidth / 2;
   const srY = cY - srHeight / 2 + 180;
 
-  // --- ANIMACIONES ---
+  // --- ANIMACIONES OPTIMIZADAS ---
   const slotAnimation = (height: number) => ({
     animate: { y: [0, -height] },
     transition: { repeat: Infinity, duration: 3, ease: "linear" as const },
+    style: { willChange: "transform" },
   });
 
   const cascadeAnimation = (height: number) => ({
     animate: { y: [0, height] },
     transition: { repeat: Infinity, duration: 5, ease: "linear" as const },
+    style: { willChange: "transform" },
   });
 
   return (
-    // Contenedor que mantiene la proporción 16:9 forzada
     <div className="w-full flex justify-center items-center overflow-hidden bg-black">
-      <div className="relative w-full aspect-[1920/1080] max-h-screen">
+      <div className="relative w-full aspect-1920/1080 max-h-screen">
         <svg
           className="absolute inset-0 w-full h-full"
           viewBox="0 0 1920 1080"
@@ -123,7 +124,7 @@ export default function Animacion() {
             </radialGradient>
           </defs>
 
-          {/* Fondo y elementos */}
+          {/* Fondo */}
           <image
             href={imagePath}
             width="1920"

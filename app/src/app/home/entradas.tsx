@@ -28,7 +28,8 @@ import foto_22 from "./image/foto_22.jpg";
 
 const getSrc = (img: unknown): string => {
   if (typeof img === "string") return img;
-  if (img && typeof img === "object" && "src" in img) return (img as { src: string }).src;
+  if (img && typeof img === "object" && "src" in img)
+    return (img as { src: string }).src;
   return String(img);
 };
 
@@ -59,35 +60,35 @@ const images = [
 
 export default function Entradas() {
   return (
-    <div className="w-full h-screen grid grid-cols-2 overflow-hidden bg-red-500">
-      {/* Lado izquierdo: Scroll de imágenes */}
-      <div className="relative w-full h-full overflow-hidden bg-gray-900">
-        <motion.div
-          className="flex flex-col gap-4 p-4"
-          animate={{ y: ["0%", "-50%"] }} // Se desplaza la mitad de la altura
-          transition={{
-            repeat: Infinity,
-            ease: "linear",
-            duration: 80, // Ajusta la velocidad aquí
-          }}
-        >
-          {/* Duplicamos las imágenes para el bucle infinito */}
-          {[...images, ...images].map((src, index) => (
-            <Image
-              key={index}
-              src={src}
-              width={1920}
-              height={1080}
-              alt={`Imagen ${index}`}
-              className="w-full h-auto rounded-lg object-cover"
-            />
-          ))}
-        </motion.div>
-      </div>
+    <div className="aspect-[1920/2160] md:aspect-[1920/1080]  grid grid-cols-2 overflow-hidden bg-red-500">
+      <div className="relative w-full max-h-screen">
+        <div className="relative w-full h-full overflow-hidden bg-gray-900">
+          <motion.div
+            className="flex flex-col gap-4 p-4"
+            animate={{ y: ["0%", "-50%"] }} // Se desplaza la mitad de la altura
+            transition={{
+              repeat: Infinity,
+              ease: "linear",
+              duration: 40, // Ajusta la velocidad aquí
+            }}
+          >
+            {/* Duplicamos las imágenes para el bucle infinito */}
+            {[...images, ...images].map((src, index) => (
+              <Image
+                key={index}
+                src={src}
+                width={1920}
+                height={1080}
+                alt={`Imagen ${index}`}
+                className="w-full h-auto rounded-lg object-cover"
+              />
+            ))}
+          </motion.div>
+        </div>
 
-      {/* Lado derecho: Limpio */}
-      <div className="flex justify-center items-center text-white">
-        <h2>Contenido pendiente</h2>
+        <div className="flex justify-center items-center text-white">
+          <h2>Contenido pendiente</h2>
+        </div>
       </div>
     </div>
   );

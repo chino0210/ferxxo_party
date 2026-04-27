@@ -111,7 +111,7 @@ export default function Animacion() {
 
   return (
     <div className="w-full flex justify-center items-center overflow-hidden bg-black">
-      <div className="relative w-full aspect-1920/1080 max-h-screen">
+      <div className="relative w-full aspect-1920/2160 md:aspect-1920/1080 max-h-screen">
         <svg
           className="absolute inset-0 w-full h-full"
           viewBox="0 0 1920 1080"

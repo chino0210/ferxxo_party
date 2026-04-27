@@ -68,6 +68,7 @@ export default function Animacion() {
   const srHeight = 200;
   const fWidth = 1500;
   const fHeight = 1300;
+
   const cX = 1920 / 2;
   const cY = 1080 / 2;
 
@@ -95,204 +96,205 @@ export default function Animacion() {
   const srX = cX - srWidth / 2;
   const srY = cY - srHeight / 2 + 180;
 
-  // --- VARIABLES DE ANIMACIÓN ---
+  // --- ANIMACIONES ---
   const slotAnimation = (height: number) => ({
     animate: { y: [0, -height] },
     transition: { repeat: Infinity, duration: 3, ease: "linear" as const },
   });
 
-  // Animación ajustada a descenso
   const cascadeAnimation = (height: number) => ({
     animate: { y: [0, height] },
     transition: { repeat: Infinity, duration: 5, ease: "linear" as const },
   });
 
   return (
-    <div className="relative w-full min-h-screen">
-      <svg
-        className="absolute inset-0 w-full h-full"
-        viewBox="0 0 1920 1080"
-        preserveAspectRatio="xMidYMid slice"
-      >
-        <defs>
-          <radialGradient id="vignetteGradient" cx="50%" cy="50%" r="75%">
-            <stop offset="0%" stopColor="transparent" />
-            <stop offset="100%" stopColor="black" />
-          </radialGradient>
-        </defs>
-
-        <image
-          href={imagePath}
-          width="1920"
-          height="1080"
+    // Contenedor que mantiene la proporción 16:9 forzada
+    <div className="w-full flex justify-center items-center overflow-hidden bg-black">
+      <div className="relative w-full aspect-[1920/1080] max-h-screen">
+        <svg
+          className="absolute inset-0 w-full h-full"
+          viewBox="0 0 1920 1080"
           preserveAspectRatio="xMidYMid slice"
-        />
-        <image
-          href={fondoBlancoPath}
-          x={fbX}
-          y={fbY}
-          width={fbWidth}
-          height={fbHeight}
-          preserveAspectRatio="none"
-        />
-
-        {/* Tragaperras (se mantiene igual) */}
-        <g transform={`translate(${tX}, ${tY})`}>
-          <motion.image
-            {...slotAnimation(tHeight)}
-            href={tragaperrasPath}
-            x={0}
-            y={0}
-            width={tWidth}
-            height={tHeight}
-            preserveAspectRatio="none"
-          />
-          <motion.image
-            {...slotAnimation(tHeight)}
-            href={tragaperrasPath}
-            x={0}
-            y={tHeight}
-            width={tWidth}
-            height={tHeight}
-            preserveAspectRatio="none"
-          />
-        </g>
-
-        <image
-          href={maquinaPath}
-          x={mX}
-          y={mY}
-          width={mWidth}
-          height={mHeight}
-          preserveAspectRatio="none"
-        />
-        <image
-          href={basePath}
-          x={bX}
-          y={bY}
-          width={bWidth}
-          height={bHeight}
-          preserveAspectRatio="none"
-        />
-        <image
-          href={parrillaPath}
-          x={pX}
-          y={pY}
-          width={pWidth}
-          height={pHeight}
-          preserveAspectRatio="none"
-        />
-
-        {/* Fichas en Cascada (Descendente) */}
-        <g transform={`translate(${fX}, ${fY})`}>
-          <motion.image
-            {...cascadeAnimation(fHeight)}
-            href={fichasPath}
-            x={0}
-            y={-fHeight}
-            width={fWidth}
-            height={fHeight}
-            preserveAspectRatio="xMidYMid meet"
-          />
-          <motion.image
-            {...cascadeAnimation(fHeight)}
-            href={fichasPath}
-            x={0}
-            y={0}
-            width={fWidth}
-            height={fHeight}
-            preserveAspectRatio="xMidYMid meet"
-          />
-        </g>
-
-        <image
-          href={fffPath}
-          x={fffX}
-          y={fffY}
-          width={fffWidth}
-          height={fffHeight}
-          preserveAspectRatio="xMidYMid meet"
-        />
-
-        {/* Linea 1 en Cascada (Descendente) */}
-        <g transform={`translate(${l1X}, ${l1Y})`}>
-          <motion.image
-            {...cascadeAnimation(l1Height)}
-            href={linea1Path}
-            x={0}
-            y={-l1Height}
-            width={l1Width}
-            height={l1Height}
-            preserveAspectRatio="xMidYMid meet"
-          />
-
-          <motion.image
-            {...cascadeAnimation(l1Height)}
-            href={linea1Path}
-            x={0}
-            y={0}
-            width={l1Width}
-            height={l1Height}
-            preserveAspectRatio="xMidYMid meet"
-          />
-        </g>
-
-        {/* Linea 2 en Cascada (Descendente) */}
-        <g transform={`translate(${l2X}, ${l2Y})`}>
-          <motion.image
-            {...cascadeAnimation(l2Height)}
-            href={linea2Path}
-            x={0}
-            y={-l2Height}
-            width={l2Width}
-            height={l2Height}
-            preserveAspectRatio="xMidYMid meet"
-          />
-
-          <motion.image
-            {...cascadeAnimation(l2Height)}
-            href={linea2Path}
-            x={0}
-            y={0}
-            width={l2Width}
-            height={l2Height}
-            preserveAspectRatio="xMidYMid meet"
-          />
-        </g>
-
-        <image
-          href={cartelPath}
-          x={cCartelX}
-          y={cCartelY}
-          width={cWidth}
-          height={cHeight}
-          preserveAspectRatio="none"
-        />
-
-        <image
-          href={sinRencoresPath}
-          x={srX}
-          y={srY}
-          width={srWidth}
-          height={srHeight}
-          preserveAspectRatio="xMidYMid meet"
-        />
-
-        <rect
-          width="1920"
-          height="1080"
-          fill="url(#vignetteGradient)"
-          fillOpacity="0.8"
-        />
-      </svg>
-
-      <div className="absolute inset-0 z-10 pointer-events-none flex justify-center items-end pb-20">
-        <button
-          className="pointer-events-auto bg-yellow-500 hover:bg-yellow-400 text-black font-bold text-2xl py-6 px-12 rounded-xl shadow-[0_0_20px_rgba(234,179,8,0.6)] border-4 border-yellow-600 transition-transform hover:scale-105"
-          onClick={() => console.log("¡Entradas clickeado!")}
         >
-          ENTRADAS
-        </button>
+          <defs>
+            <radialGradient id="vignetteGradient" cx="50%" cy="50%" r="75%">
+              <stop offset="0%" stopColor="transparent" />
+              <stop offset="100%" stopColor="black" />
+            </radialGradient>
+          </defs>
+
+          {/* Fondo y elementos */}
+          <image
+            href={imagePath}
+            width="1920"
+            height="1080"
+            preserveAspectRatio="xMidYMid slice"
+          />
+          <image
+            href={fondoBlancoPath}
+            x={fbX}
+            y={fbY}
+            width={fbWidth}
+            height={fbHeight}
+            preserveAspectRatio="none"
+          />
+
+          {/* Tragaperras */}
+          <g transform={`translate(${tX}, ${tY})`}>
+            <motion.image
+              {...slotAnimation(tHeight)}
+              href={tragaperrasPath}
+              x={0}
+              y={0}
+              width={tWidth}
+              height={tHeight}
+              preserveAspectRatio="none"
+            />
+            <motion.image
+              {...slotAnimation(tHeight)}
+              href={tragaperrasPath}
+              x={0}
+              y={tHeight}
+              width={tWidth}
+              height={tHeight}
+              preserveAspectRatio="none"
+            />
+          </g>
+
+          <image
+            href={maquinaPath}
+            x={mX}
+            y={mY}
+            width={mWidth}
+            height={mHeight}
+            preserveAspectRatio="none"
+          />
+          <image
+            href={basePath}
+            x={bX}
+            y={bY}
+            width={bWidth}
+            height={bHeight}
+            preserveAspectRatio="none"
+          />
+          <image
+            href={parrillaPath}
+            x={pX}
+            y={pY}
+            width={pWidth}
+            height={pHeight}
+            preserveAspectRatio="none"
+          />
+
+          {/* Fichas en Cascada */}
+          <g transform={`translate(${fX}, ${fY})`}>
+            <motion.image
+              {...cascadeAnimation(fHeight)}
+              href={fichasPath}
+              x={0}
+              y={-fHeight}
+              width={fWidth}
+              height={fHeight}
+              preserveAspectRatio="xMidYMid meet"
+            />
+            <motion.image
+              {...cascadeAnimation(fHeight)}
+              href={fichasPath}
+              x={0}
+              y={0}
+              width={fWidth}
+              height={fHeight}
+              preserveAspectRatio="xMidYMid meet"
+            />
+          </g>
+
+          <image
+            href={fffPath}
+            x={fffX}
+            y={fffY}
+            width={fffWidth}
+            height={fffHeight}
+            preserveAspectRatio="xMidYMid meet"
+          />
+
+          {/* Linea 1 */}
+          <g transform={`translate(${l1X}, ${l1Y})`}>
+            <motion.image
+              {...cascadeAnimation(l1Height)}
+              href={linea1Path}
+              x={0}
+              y={-l1Height}
+              width={l1Width}
+              height={l1Height}
+              preserveAspectRatio="xMidYMid meet"
+            />
+            <motion.image
+              {...cascadeAnimation(l1Height)}
+              href={linea1Path}
+              x={0}
+              y={0}
+              width={l1Width}
+              height={l1Height}
+              preserveAspectRatio="xMidYMid meet"
+            />
+          </g>
+
+          {/* Linea 2 */}
+          <g transform={`translate(${l2X}, ${l2Y})`}>
+            <motion.image
+              {...cascadeAnimation(l2Height)}
+              href={linea2Path}
+              x={0}
+              y={-l2Height}
+              width={l2Width}
+              height={l2Height}
+              preserveAspectRatio="xMidYMid meet"
+            />
+            <motion.image
+              {...cascadeAnimation(l2Height)}
+              href={linea2Path}
+              x={0}
+              y={0}
+              width={l2Width}
+              height={l2Height}
+              preserveAspectRatio="xMidYMid meet"
+            />
+          </g>
+
+          <image
+            href={cartelPath}
+            x={cCartelX}
+            y={cCartelY}
+            width={cWidth}
+            height={cHeight}
+            preserveAspectRatio="none"
+          />
+          <image
+            href={sinRencoresPath}
+            x={srX}
+            y={srY}
+            width={srWidth}
+            height={srHeight}
+            preserveAspectRatio="xMidYMid meet"
+          />
+
+          <rect
+            width="1920"
+            height="1080"
+            fill="url(#vignetteGradient)"
+            fillOpacity="0.8"
+          />
+        </svg>
+
+        {/* Botón */}
+        <div className="absolute inset-0 z-10 pointer-events-none flex justify-center items-end pb-[10%]">
+          <button
+            className="pointer-events-auto bg-yellow-500 hover:bg-yellow-400 text-black font-bold text-lg md:text-2xl py-4 px-8 md:py-6 md:px-12 rounded-xl shadow-[0_0_20px_rgba(234,179,8,0.6)] border-4 border-yellow-600 transition-transform hover:scale-105"
+            onClick={() => console.log("¡Entradas clickeado!")}
+          >
+            ENTRADAS
+          </button>
+        </div>
       </div>
     </div>
   );

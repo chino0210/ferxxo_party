@@ -85,9 +85,9 @@ export default function Animacion() {
   const pY = cY - pHeight / 2 - 140;
   const cCartelX = cX - cWidth / 2;
   const cCartelY = cY - cHeight / 2 + 200;
-  const l1X = cX - l1Width / 2 + 550;
+  const l1X = cX - l1Width / 2 + 650;
   const l1Y = cY - l1Height / 2;
-  const l2X = cX - l2Width / 2 - 550;
+  const l2X = cX - l2Width / 2 - 650;
   const l2Y = cY - l2Height / 2;
   const fX = cX - fWidth / 2;
   const fY = cY - fHeight / 2;
@@ -286,16 +286,6 @@ export default function Animacion() {
             fillOpacity="0.8"
           />
         </svg>
-
-        {/* Botón */}
-        <div className="absolute inset-0 z-10 pointer-events-none flex justify-center items-end pb-[10%]">
-          <button
-            className="pointer-events-auto bg-yellow-500 hover:bg-yellow-400 text-black font-bold text-lg md:text-2xl py-4 px-8 md:py-6 md:px-12 rounded-xl shadow-[0_0_20px_rgba(234,179,8,0.6)] border-4 border-yellow-600 transition-transform hover:scale-105"
-            onClick={() => console.log("¡Entradas clickeado!")}
-          >
-            ENTRADAS
-          </button>
-        </div>
       </div>
     </div>
   );

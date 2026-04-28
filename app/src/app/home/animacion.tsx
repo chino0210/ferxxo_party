@@ -13,6 +13,8 @@ import linea_2 from "./svgs/linea_2.svg";
 import fff from "./svgs/fff.svg";
 import sin_rencores from "./svgs/sin_rencorres.svg";
 import fichas from "./svgs/fichas.svg";
+import metal_1 from "./svgs/metal_1.svg";
+import metal_2 from "./svgs/metal_2.svg";
 
 export default function Animacion() {
   // Paths
@@ -44,30 +46,38 @@ export default function Animacion() {
       : (sin_rencores as any).src || sin_rencores;
   const fichasPath =
     typeof fichas === "string" ? fichas : (fichas as any).src || fichas;
+  const metal1Path =
+    typeof metal_1 === "string" ? metal_1 : (metal_1 as any).src || metal_1;
+  const metal2Path =
+    typeof metal_2 === "string" ? metal_2 : (metal_2 as any).src || metal_2;
 
   // --- CONFIGURACIÓN DE TAMAÑOS ---
-  const tWidth = 600;
-  const tHeight = 900;
-  const fbWidth = 800;
-  const fbHeight = 600;
-  const mWidth = 845;
-  const mHeight = 875;
-  const bWidth = 900;
-  const bHeight = 200;
-  const pWidth = 680;
-  const pHeight = 450;
-  const cWidth = 800;
-  const cHeight = 400;
-  const l1Width = 1500;
-  const l1Height = 1300;
-  const l2Width = 1500;
-  const l2Height = 1300;
-  const fffWidth = 600;
-  const fffHeight = 600;
-  const srWidth = 800;
-  const srHeight = 200;
-  const fWidth = 1500;
-  const fHeight = 1300;
+  const scale = 0.8; // Escala para reducir todos los SVG excepto los especificados
+
+  const tWidth = 600 * scale;
+  const tHeight = 900 * scale;
+  const fbWidth = 800 * scale;
+  const fbHeight = 600 * scale;
+  const mWidth = 845 * scale;
+  const mHeight = 875 * scale;
+  const pWidth = 680 * scale;
+  const pHeight = 450 * scale;
+  const cWidth = 800 * scale;
+  const cHeight = 400 * scale;
+  const l1Width = 1500; // Sin escala
+  const l1Height = 1300; // Sin escala
+  const l2Width = 1500; // Sin escala
+  const l2Height = 1300; // Sin escala
+  const fffWidth = 600 * scale;
+  const fffHeight = 600 * scale;
+  const srWidth = 800 * scale;
+  const srHeight = 200 * scale;
+  const fWidth = 1500; // Sin escala
+  const fHeight = 1300; // Sin escala
+  const metal1Width = 850;
+  const metal1Height = 250;
+  const metal2Width = 850;
+  const metal2Height = 800;
 
   const cX = 1920 / 2;
   const cY = 1080 / 2;
@@ -79,12 +89,10 @@ export default function Animacion() {
   const fbY = cY - fbHeight / 2 - 100;
   const mX = cX - mWidth / 2;
   const mY = cY - mHeight / 2 - 210;
-  const bX = cX - bWidth / 2;
-  const bY = mY + mHeight - 50;
   const pX = cX - pWidth / 2;
   const pY = cY - pHeight / 2 - 140;
   const cCartelX = cX - cWidth / 2;
-  const cCartelY = cY - cHeight / 2 + 200;
+  const cCartelY = cY - cHeight / 2 + 180;
   const l1X = cX - l1Width / 2 + 650;
   const l1Y = cY - l1Height / 2;
   const l2X = cX - l2Width / 2 - 650;
@@ -92,9 +100,13 @@ export default function Animacion() {
   const fX = cX - fWidth / 2;
   const fY = cY - fHeight / 2;
   const fffX = cX - fffWidth / 2;
-  const fffY = cY - fffHeight / 2 - 80;
+  const fffY = cY - fffHeight / 2 - 40;
   const srX = cX - srWidth / 2;
   const srY = cY - srHeight / 2 + 180;
+  const metalTopX = cX - metal1Width / 2;
+  const metalTopY = -50;
+  const metalBottomX = cX - metal2Width / 2;
+  const metalBottomY = 1080 - metal2Height + 400;
 
   // --- ANIMACIONES OPTIMIZADAS ---
   const slotAnimation = (height: number) => ({
@@ -170,14 +182,7 @@ export default function Animacion() {
             height={mHeight}
             preserveAspectRatio="none"
           />
-          <image
-            href={basePath}
-            x={bX}
-            y={bY}
-            width={bWidth}
-            height={bHeight}
-            preserveAspectRatio="none"
-          />
+
           <image
             href={parrillaPath}
             x={pX}
@@ -208,6 +213,28 @@ export default function Animacion() {
               preserveAspectRatio="xMidYMid meet"
             />
           </g>
+
+          {/* Metal top y bottom */}
+          <g
+            transform={`translate(${metalTopX}, ${metalTopY + metal1Height}) scale(1, -1)`}
+          >
+            <image
+              href={metal1Path}
+              x={0}
+              y={0}
+              width={metal1Width}
+              height={metal1Height}
+              preserveAspectRatio="none"
+            />
+          </g>
+          <image
+            href={metal2Path}
+            x={metalBottomX}
+            y={metalBottomY}
+            width={metal2Width}
+            height={metal2Height}
+            preserveAspectRatio="none"
+          />
 
           <image
             href={fffPath}

@@ -2,6 +2,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 
 import foto_1 from "./image/foto_1.jpg";
 import foto_2 from "./image/foto_2.jpg";
@@ -60,34 +61,46 @@ const images = [
 
 export default function Entradas() {
   return (
-    <div className="aspect-[1920/2160] md:aspect-[1920/1080]  grid grid-cols-2 overflow-hidden bg-red-500">
-      <div className="relative w-full max-h-screen">
-        <div className="relative w-full h-full overflow-hidden bg-gray-900">
-          <motion.div
-            className="flex flex-col gap-4 p-4"
-            animate={{ y: ["0%", "-50%"] }} // Se desplaza la mitad de la altura
-            transition={{
-              repeat: Infinity,
-              ease: "linear",
-              duration: 40, // Ajusta la velocidad aquí
-            }}
-          >
-            {/* Duplicamos las imágenes para el bucle infinito */}
-            {[...images, ...images].map((src, index) => (
-              <Image
-                key={index}
-                src={src}
-                width={1920}
-                height={1080}
-                alt={`Imagen ${index}`}
-                className="w-full h-auto rounded-lg object-cover"
-              />
-            ))}
-          </motion.div>
-        </div>
+    <div className="aspect-[1920/2160] md:aspect-[1920/1080] grid grid-cols-2 overflow-hidden bg-red-500">
+      <div className="relative w-full h-full overflow-hidden bg-gray-900">
+        <motion.div
+          className="flex flex-col"
+          animate={{ y: ["0%", "-50%"] }} // Se desplaza la mitad de la altura
+          transition={{
+            repeat: Infinity,
+            ease: "linear",
+            duration: 40, // Ajusta la velocidad aquí
+          }}
+        >
+          {/* Duplicamos las imágenes para el bucle infinito */}
+          {[...images, ...images].map((src, index) => (
+            <Image
+              key={index}
+              src={src}
+              width={1920}
+              height={1080}
+              alt={`Imagen ${index}`}
+              className="w-full h-auto rounded-lg object-cover"
+            />
+          ))}
+        </motion.div>
+      </div>
 
-        <div className="flex justify-center items-center text-white">
-          <h2>Contenido pendiente</h2>
+      <div className="flex flex-col justify-center items-center text-white gap-4">
+        <div className="w-full max-w-xs">
+          <input
+            type="text"
+            placeholder="Ingrese su texto"
+            className="w-full px-4 py-2 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-white"
+          />
+        </div>
+        <div className="w-full max-w-xs flex justify-center">
+          <Link
+            href="#"
+            className="inline-block px-6 py-3 bg-white text-black font-semibold rounded-lg hover:bg-gray-200 transition-colors shadow-[0_0_10px_rgba(255,255,255,0.8),0_0_20px_rgba(255,255,255,0.6),0_0_30px_rgba(255,255,255,0.4)]"
+          >
+            Adquiera su entrada
+          </Link>
         </div>
       </div>
     </div>

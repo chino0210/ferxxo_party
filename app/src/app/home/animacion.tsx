@@ -104,7 +104,7 @@ export default function Animacion() {
   const srX = cX - srWidth / 2;
   const srY = cY - srHeight / 2 + 180;
   const metalTopX = cX - metal1Width / 2;
-  const metalTopY = -50;
+  const metalTopY = -125;
   const metalBottomX = cX - metal2Width / 2;
   const metalBottomY = 1080 - metal2Height + 400;
 
@@ -191,6 +191,27 @@ export default function Animacion() {
             height={pHeight}
             preserveAspectRatio="none"
           />
+          {/* Metal top y bottom */}
+          <g
+            transform={`translate(${metalTopX}, ${metalTopY + metal1Height}) scale(1, -1)`}
+          >
+            <image
+              href={metal1Path}
+              x={0}
+              y={0}
+              width={metal1Width}
+              height={metal1Height}
+              preserveAspectRatio="none"
+            />
+          </g>
+          <image
+            href={metal2Path}
+            x={metalBottomX}
+            y={metalBottomY}
+            width={metal2Width}
+            height={metal2Height}
+            preserveAspectRatio="none"
+          />
 
           {/* Fichas en Cascada */}
           <g transform={`translate(${fX}, ${fY})`}>
@@ -213,28 +234,6 @@ export default function Animacion() {
               preserveAspectRatio="xMidYMid meet"
             />
           </g>
-
-          {/* Metal top y bottom */}
-          <g
-            transform={`translate(${metalTopX}, ${metalTopY + metal1Height}) scale(1, -1)`}
-          >
-            <image
-              href={metal1Path}
-              x={0}
-              y={0}
-              width={metal1Width}
-              height={metal1Height}
-              preserveAspectRatio="none"
-            />
-          </g>
-          <image
-            href={metal2Path}
-            x={metalBottomX}
-            y={metalBottomY}
-            width={metal2Width}
-            height={metal2Height}
-            preserveAspectRatio="none"
-          />
 
           <image
             href={fffPath}

@@ -61,8 +61,9 @@ const images = [
 
 export default function Entradas() {
   return (
-    <div className="aspect-[1920/2160] md:aspect-[1920/1080] grid grid-cols-2 overflow-hidden bg-red-500">
-      <div className="relative w-full h-full overflow-hidden bg-gray-900">
+    <div className="aspect-1920/2160 md:aspect-1920/1080 relative grid overflow-hidden bg-red-500 md:grid-cols-2">
+      {/* GRID 1 */}
+      <div className="absolute inset-0 md:relative w-full h-full overflow-hidden bg-gray-900">
         <motion.div
           className="flex flex-col"
           animate={{ y: ["0%", "-50%"] }} // Se desplaza la mitad de la altura
@@ -86,7 +87,7 @@ export default function Entradas() {
         </motion.div>
       </div>
 
-      <div className="flex flex-col justify-center items-center text-white gap-4">
+      <div className="absolute inset-0 md:relative flex flex-col justify-center items-center text-white gap-4 z-10">
         <div className="w-full max-w-xs">
           <input
             type="text"

@@ -61,16 +61,16 @@ const images = [
 
 export default function Entradas() {
   return (
-    <div className="aspect-1920/2160 md:aspect-1920/1080 relative grid overflow-hidden bg-red-500 md:grid-cols-2">
-      {/* GRID 1 */}
-      <div className="absolute inset-0 md:relative w-full h-full overflow-hidden bg-gray-900">
+    <section className="w-full min-h-screen grid grid-cols-1 md:grid-cols-2 bg-black">
+      {/* ─── LEFT: Photo Carousel ─── */}
+      <div className="relative w-full h-[50vh] md:h-screen overflow-hidden bg-gray-900">
         <motion.div
           className="flex flex-col"
-          animate={{ y: ["0%", "-50%"] }} // Se desplaza la mitad de la altura
+          animate={{ y: ["0%", "-50%"] }}
           transition={{
             repeat: Infinity,
             ease: "linear",
-            duration: 40, // Ajusta la velocidad aquí
+            duration: 40,
           }}
         >
           {/* Duplicamos las imágenes para el bucle infinito */}
@@ -80,30 +80,76 @@ export default function Entradas() {
               src={src}
               width={1920}
               height={1080}
-              alt={`Imagen ${index}`}
-              className="w-full h-auto rounded-lg object-cover"
+              alt={`Feria ${(index % images.length) + 1}`}
+              className="w-full h-auto object-cover"
+              priority={index < 4}
             />
           ))}
         </motion.div>
+
+        {/* Mobile gradient overlay to blend into form */}
+        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black via-black/60 to-transparent md:hidden pointer-events-none" />
+
+        {/* Desktop subtle edge vignette */}
+        <div className="hidden md:block absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-black to-transparent pointer-events-none" />
       </div>
 
-      <div className="absolute inset-0 md:relative flex flex-col justify-center items-center text-white gap-4 z-10">
-        <div className="w-full max-w-xs">
-          <input
-            type="text"
-            placeholder="Ingrese su texto"
-            className="w-full px-4 py-2 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-white"
-          />
+      {/* ─── RIGHT: Ticket Form ─── */}
+      <div className="relative flex flex-col justify-center items-center gap-6 px-6 py-12 md:px-12 md:py-0 bg-gradient-to-br from-[#0a0a0a] via-[#111111] to-[#0a0a0a]">
+        {/* Decorative corner accents */}
+        <div className="absolute top-0 left-0 w-16 h-16 border-l-2 border-t-2 border-[#ffd700]/30 rounded-tl-lg" />
+        <div className="absolute bottom-0 right-0 w-16 h-16 border-r-2 border-b-2 border-[#ffd700]/30 rounded-br-lg" />
+
+        {/* Heading */}
+        <div className="text-center space-y-2 z-10">
+          <h2 className="text-4xl md:text-5xl font-black uppercase tracking-widest text-neon-gold">
+            Entradas
+          </h2>
+          <p className="text-gray-400 text-sm md:text-base tracking-wide uppercase">
+            Sé parte de la experiencia
+          </p>
         </div>
-        <div className="w-full max-w-xs flex justify-center">
-          <Link
-            href="#"
-            className="inline-block px-6 py-3 bg-white text-black font-semibold rounded-lg hover:bg-gray-200 transition-colors shadow-[0_0_10px_rgba(255,255,255,0.8),0_0_20px_rgba(255,255,255,0.6),0_0_30px_rgba(255,255,255,0.4)]"
+
+        {/* Form card */}
+        <div className="w-full max-w-sm space-y-5 z-10">
+          {/* Input */}
+          <div className="relative group">
+            <input
+              type="text"
+              placeholder="Ingresa tu nombre o código"
+              className="w-full px-5 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 
+                         outline-none transition-all duration-300
+                         focus:border-[#ffd700]/60 focus:bg-white/10 focus:ring-1 focus:ring-[#ffd700]/40
+                         hover:border-white/20"
+            />
+            <div className="absolute inset-0 rounded-xl bg-[#ffd700]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+          </div>
+
+          {/* CTA Button */}
+          <motion.div
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.98 }}
+            className="w-full"
           >
-            Adquiera su entrada
-          </Link>
+            <Link
+              href="#"
+              className="block w-full text-center px-6 py-4 rounded-xl 
+                         bg-gradient-to-r from-[#ffd700] via-[#ffcc00] to-[#ffd700]
+                         text-black font-black text-lg uppercase tracking-wider
+                         shadow-[0_0_15px_rgba(255,215,0,0.4)]
+                         hover:shadow-[0_0_30px_rgba(255,215,0,0.7)]
+                         transition-shadow duration-300"
+            >
+              Adquirir entrada
+            </Link>
+          </motion.div>
         </div>
+
+        {/* Footer tagline */}
+        <p className="text-gray-600 text-xs uppercase tracking-[0.3em] z-10">
+          Sin rencores · Solo buena vibra
+        </p>
       </div>
-    </div>
+    </section>
   );
 }

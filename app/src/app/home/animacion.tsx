@@ -16,43 +16,32 @@ import fichas from "./svgs/fichas.svg";
 import metal_1 from "./svgs/metal_1.svg";
 import metal_2 from "./svgs/metal_2.svg";
 
+const getSvgSrc = (img: unknown): string => {
+  if (typeof img === "string") return img;
+  if (img && typeof img === "object" && "src" in img)
+    return (img as { src: string }).src;
+  return String(img);
+};
+
 export default function Animacion() {
   // Paths
-  const imagePath =
-    typeof tablero === "string" ? tablero : (tablero as any).src || tablero;
-  const parrillaPath =
-    typeof parrilla === "string" ? parrilla : (parrilla as any).src || parrilla;
-  const tragaperrasPath =
-    typeof tragaperras === "string"
-      ? tragaperras
-      : (tragaperras as any).src || tragaperras;
-  const fondoBlancoPath =
-    typeof fondo_blanco === "string"
-      ? fondo_blanco
-      : (fondo_blanco as any).src || fondo_blanco;
-  const maquinaPath =
-    typeof maquina === "string" ? maquina : (maquina as any).src || maquina;
-  const basePath = typeof base === "string" ? base : (base as any).src || base;
-  const cartelPath =
-    typeof cartel === "string" ? cartel : (cartel as any).src || cartel;
-  const linea1Path =
-    typeof linea_1 === "string" ? linea_1 : (linea_1 as any).src || linea_1;
-  const linea2Path =
-    typeof linea_2 === "string" ? linea_2 : (linea_2 as any).src || linea_2;
-  const fffPath = typeof fff === "string" ? fff : (fff as any).src || fff;
-  const sinRencoresPath =
-    typeof sin_rencores === "string"
-      ? sin_rencores
-      : (sin_rencores as any).src || sin_rencores;
-  const fichasPath =
-    typeof fichas === "string" ? fichas : (fichas as any).src || fichas;
-  const metal1Path =
-    typeof metal_1 === "string" ? metal_1 : (metal_1 as any).src || metal_1;
-  const metal2Path =
-    typeof metal_2 === "string" ? metal_2 : (metal_2 as any).src || metal_2;
+  const imagePath = getSvgSrc(tablero);
+  const parrillaPath = getSvgSrc(parrilla);
+  const tragaperrasPath = getSvgSrc(tragaperras);
+  const fondoBlancoPath = getSvgSrc(fondo_blanco);
+  const maquinaPath = getSvgSrc(maquina);
+  const basePath = getSvgSrc(base);
+  const cartelPath = getSvgSrc(cartel);
+  const linea1Path = getSvgSrc(linea_1);
+  const linea2Path = getSvgSrc(linea_2);
+  const fffPath = getSvgSrc(fff);
+  const sinRencoresPath = getSvgSrc(sin_rencores);
+  const fichasPath = getSvgSrc(fichas);
+  const metal1Path = getSvgSrc(metal_1);
+  const metal2Path = getSvgSrc(metal_2);
 
   // --- CONFIGURACIÓN DE TAMAÑOS ---
-  const scale = 0.8; // Escala para reducir todos los SVG excepto los especificados
+  const scale = 0.8;
 
   const tWidth = 600 * scale;
   const tHeight = 900 * scale;
@@ -64,16 +53,16 @@ export default function Animacion() {
   const pHeight = 450 * scale;
   const cWidth = 800 * scale;
   const cHeight = 400 * scale;
-  const l1Width = 1500; // Sin escala
-  const l1Height = 1300; // Sin escala
-  const l2Width = 1500; // Sin escala
-  const l2Height = 1300; // Sin escala
+  const l1Width = 1500;
+  const l1Height = 1300;
+  const l2Width = 1500;
+  const l2Height = 1300;
   const fffWidth = 600 * scale;
   const fffHeight = 600 * scale;
   const srWidth = 800 * scale;
   const srHeight = 200 * scale;
-  const fWidth = 1500; // Sin escala
-  const fHeight = 1300; // Sin escala
+  const fWidth = 1500;
+  const fHeight = 1300;
   const metal1Width = 850;
   const metal1Height = 250;
   const metal2Width = 850;
@@ -122,18 +111,30 @@ export default function Animacion() {
   });
 
   return (
-    <div className="w-full flex justify-center items-center overflow-hidden bg-black">
-      <div className="relative w-full aspect-1920/2160 md:aspect-1920/1080 max-h-screen">
+    <section className="relative w-full h-[80vh] md:h-screen flex justify-center items-center overflow-hidden bg-black">
+      {/* Ambient top/bottom light leaks */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[#ffd700]/10 to-transparent z-10" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#ff2a2a]/10 to-transparent z-10" />
+
+      <div className="relative w-full h-full aspect-1920/2160 md:aspect-1920/1080">
         <svg
           className="absolute inset-0 w-full h-full"
           viewBox="0 0 1920 1080"
           preserveAspectRatio="xMidYMid slice"
         >
           <defs>
+            {/* Vignette más profunda para look cinematográfico */}
             <radialGradient id="vignetteGradient" cx="50%" cy="50%" r="75%">
               <stop offset="0%" stopColor="transparent" />
-              <stop offset="100%" stopColor="black" />
+              <stop offset="60%" stopColor="rgba(0,0,0,0.3)" />
+              <stop offset="100%" stopColor="rgba(0,0,0,0.95)" />
             </radialGradient>
+
+            {/* Glow dorado sutil para elementos */}
+            <filter id="goldGlow" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="6" result="blur" />
+              <feComposite in="SourceGraphic" in2="blur" operator="over" />
+            </filter>
           </defs>
 
           {/* Fondo */}
@@ -191,6 +192,7 @@ export default function Animacion() {
             height={pHeight}
             preserveAspectRatio="none"
           />
+
           {/* Metal top y bottom */}
           <g
             transform={`translate(${metalTopX}, ${metalTopY + metal1Height}) scale(1, -1)`}
@@ -305,14 +307,16 @@ export default function Animacion() {
             preserveAspectRatio="xMidYMid meet"
           />
 
+          {/* Vignette overlay */}
           <rect
             width="1920"
             height="1080"
             fill="url(#vignetteGradient)"
-            fillOpacity="0.8"
+            fillOpacity="0.9"
           />
         </svg>
       </div>
-    </div>
+    </section>
   );
 }
+

@@ -4,9 +4,12 @@ import Entradas from "./entradas";
 
 export default function Inicio() {
   return (
-    <div className="w-full">
+    <main className="w-full">
       <Animacion />
+      {/* Subtle divider between hero and tickets */}
+      <div className="h-1 w-full bg-gradient-to-r from-transparent via-[#ffd700]/30 to-transparent" />
       <Entradas />
-    </div>
+    </main>
   );
 }
+

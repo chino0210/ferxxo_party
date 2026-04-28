@@ -1,8 +1,9 @@
 "use client";
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useState, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import Link from "next/link";
+import { toPng } from "html-to-image";
+import EntradaTicket from "./components/EntradaTicket";
 
 import foto_1 from "./image/foto_1.jpg";
 import foto_2 from "./image/foto_2.jpg";
@@ -59,7 +60,68 @@ const images = [
   getSrc(foto_22),
 ];
 
+const VALID_CODES =
+  process.env.NEXT_PUBLIC_TICKET_CODES?.split(",").map((c) =>
+    c.trim().toUpperCase(),
+  ) || [];
+
 export default function Entradas() {
+  const [nombre, setNombre] = useState("");
+  const [codigo, setCodigo] = useState("");
+  const [error, setError] = useState("");
+  const [ticket, setTicket] = useState<{
+    nombre: string;
+    codigo: string;
+  } | null>(null);
+  const ticketRef = useRef<HTMLDivElement>(null);
+
+  const handleSubmit = () => {
+    setError("");
+    setTicket(null);
+
+    if (!nombre.trim()) {
+      setError("Ingresa tu nombre");
+      return;
+    }
+    if (!codigo.trim()) {
+      setError("Ingresa el código");
+      return;
+    }
+
+    if (!VALID_CODES.includes(codigo.trim().toUpperCase())) {
+      setError("error: obten un codigo valido sapo");
+      return;
+    }
+
+    setTicket({
+      nombre: nombre.trim(),
+      codigo: codigo.trim().toUpperCase(),
+    });
+  };
+
+  const handleDownload = async () => {
+    const node = ticketRef.current;
+    if (!node) return;
+
+    try {
+      const dataUrl = await toPng(node, {
+        pixelRatio: 2,
+        cacheBust: true,
+        skipFonts: true,
+      });
+
+      const link = document.createElement("a");
+      link.download = `entrada-${nombre.trim().replace(/\s+/g, "_")}.png`;
+      link.href = dataUrl;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (err) {
+      console.error("Error al generar la imagen:", err);
+      alert("No se pudo descargar la entrada. Intenta de nuevo.");
+    }
+  };
+
   return (
     <section className="w-full min-h-screen grid grid-cols-1 md:grid-cols-2 bg-black">
       {/* ─── LEFT: Photo Carousel ─── */}
@@ -73,7 +135,6 @@ export default function Entradas() {
             duration: 40,
           }}
         >
-          {/* Duplicamos las imágenes para el bucle infinito */}
           {[...images, ...images].map((src, index) => (
             <Image
               key={index}
@@ -87,10 +148,7 @@ export default function Entradas() {
           ))}
         </motion.div>
 
-        {/* Mobile gradient overlay to blend into form */}
         <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black via-black/60 to-transparent md:hidden pointer-events-none" />
-
-        {/* Desktop subtle edge vignette */}
         <div className="hidden md:block absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-black to-transparent pointer-events-none" />
       </div>
 
@@ -111,39 +169,100 @@ export default function Entradas() {
         </div>
 
         {/* Form card */}
-        <div className="w-full max-w-sm space-y-5 z-10">
-          {/* Input */}
+        <div className="w-full max-w-sm space-y-4 z-10">
+          {/* NOMBRE input */}
           <div className="relative group">
+            <label className="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1.5 ml-1">
+              Nombre
+            </label>
             <input
               type="text"
-              placeholder="Ingresa tu nombre o código"
-              className="w-full px-5 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 
+              value={nombre}
+              onChange={(e) => setNombre(e.target.value)}
+              placeholder="Tu nombre completo"
+              className="w-full px-5 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500
                          outline-none transition-all duration-300
                          focus:border-[#ffd700]/60 focus:bg-white/10 focus:ring-1 focus:ring-[#ffd700]/40
                          hover:border-white/20"
             />
-            <div className="absolute inset-0 rounded-xl bg-[#ffd700]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
           </div>
 
+          {/* CÓDIGO input */}
+          <div className="relative group">
+            <label className="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1.5 ml-1">
+              Código
+            </label>
+            <input
+              type="text"
+              value={codigo}
+              onChange={(e) => setCodigo(e.target.value)}
+              placeholder="Ingresa tu código"
+              className="w-full px-5 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500
+                         outline-none transition-all duration-300
+                         focus:border-[#ffd700]/60 focus:bg-white/10 focus:ring-1 focus:ring-[#ffd700]/40
+                         hover:border-white/20"
+            />
+          </div>
+
+          {/* Error message */}
+          <AnimatePresence>
+            {error && (
+              <motion.p
+                initial={{ opacity: 0, y: -8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                className="text-center text-sm font-bold text-red-500 uppercase tracking-wide"
+              >
+                {error}
+              </motion.p>
+            )}
+          </AnimatePresence>
+
           {/* CTA Button */}
-          <motion.div
+          <motion.button
+            type="button"
+            onClick={handleSubmit}
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.98 }}
-            className="w-full"
+            className="w-full text-center px-6 py-4 rounded-xl
+                       bg-gradient-to-r from-[#ffd700] via-[#ffcc00] to-[#ffd700]
+                       text-black font-black text-lg uppercase tracking-wider
+                       shadow-[0_0_15px_rgba(255,215,0,0.4)]
+                       hover:shadow-[0_0_30px_rgba(255,215,0,0.7)]
+                       transition-shadow duration-300"
           >
-            <Link
-              href="#"
-              className="block w-full text-center px-6 py-4 rounded-xl 
-                         bg-gradient-to-r from-[#ffd700] via-[#ffcc00] to-[#ffd700]
-                         text-black font-black text-lg uppercase tracking-wider
-                         shadow-[0_0_15px_rgba(255,215,0,0.4)]
-                         hover:shadow-[0_0_30px_rgba(255,215,0,0.7)]
-                         transition-shadow duration-300"
-            >
-              Adquirir entrada
-            </Link>
-          </motion.div>
+            Obtener Entrada
+          </motion.button>
         </div>
+
+        {/* Generated ticket */}
+        <AnimatePresence>
+          {ticket && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              transition={{ type: "spring", damping: 20, stiffness: 200 }}
+              className="w-full max-w-md space-y-4 z-10"
+            >
+              <div ref={ticketRef}>
+                <EntradaTicket nombre={ticket.nombre} codigo={ticket.codigo} />
+              </div>
+
+              <motion.button
+                type="button"
+                onClick={handleDownload}
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.98 }}
+                className="w-full text-center px-6 py-3 rounded-xl
+                           border-2 border-[#ffd700] text-[#ffd700] font-bold uppercase tracking-wider
+                           hover:bg-[#ffd700]/10 transition-colors duration-300"
+              >
+                Descargar entrada
+              </motion.button>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Footer tagline */}
         <p className="text-gray-600 text-xs uppercase tracking-[0.3em] z-10">

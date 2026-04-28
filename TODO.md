@@ -1,17 +1,17 @@
-# TODO - Improve Styles for Ferxxo Party
+# TODO - Ferxxo Party Features
 
-## Plan
-1. `app/globals.css` — Add casino/party theme CSS variables, smooth scrolling, custom scrollbar, glow keyframes
-2. `app/layout.tsx` — Update metadata to "Ferxxo Party | Sin Rencores"
-3. `app/src/app/home/entradas.tsx` — Major redesign (contrast, heading, input, button, mobile layout)
-4. `app/src/app/home/animacion.tsx` — Fix max-h-screen cut-off, improve responsive scaling, enhance vignette
-5. `app/src/app/home/inicio.tsx` — Minor container fixes
 
-## Progress
-- [x] Step 1: globals.css
-- [x] Step 2: layout.tsx
-- [x] Step 3: entradas.tsx
-- [x] Step 4: animacion.tsx
-- [x] Step 5: inicio.tsx
-- [x] Testing & verification — Dev server running successfully on http://localhost:3000
+- [x] Improve global styles (CSS variables, scrollbar, animations)
+- [x] Update layout metadata
+- [x] Redesign entradas section with dark theme, neon effects, responsive layout
+- [x] Fix animacion viewport and vignette
+- [x] Remove Link wrapper from entradas button
+- [x] Add `.env` with 3 ticket codes (FERXXO1, SAPO2, VIBE3)
+- [x] Create `EntradaTicket.tsx` SVG ticket component
+- [x] Form with 2 fields: NOMBRE and CÓDIGO
+- [x] Button text: "Obtener Entrada"
+- [x] CODE validation against env codes
+- [x] Error message: "error: obten un codigo valido sapo"
+- [x] Ticket generation and SVG download
+- [x] Dev server running successfully
 
